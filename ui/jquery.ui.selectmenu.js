@@ -194,10 +194,15 @@ $.widget("ui.selectmenu", {
 			'aria-labelledby': this.ids[1],
 			'id': this.ids[2]
 		});
-		this.listWrap = $( o.wrapperElement )
-			.addClass( self.widgetBaseClass + '-menu' )
-			.append( this.list )
-			.appendTo( 'body' );
+        this.listWrap = $( o.wrapperElement ).addClass( self.widgetBaseClass + '-menu' ).append( this.list );
+        // If this code is called inline (instead of via jQuery.ready), 
+        // the body isn't ready yet, IE 7 will throw an Operation Aborted error,
+        // and IE 8 will throw a js error
+        // So we append it to the body when the document is ready
+        var laterWrap = this.listWrap;
+        $(document).ready(function() {
+            $("body").append(laterWrap);
+        });
 		
 		// transfer menu click to menu button
 		this.list
